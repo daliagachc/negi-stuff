@@ -5,7 +5,37 @@ import numpy as np
 import xarray as xr
 
 
-def compressed_netcdf_save(ds, path, shuffle=True, complevel=4, fletcher32=True, encode_u=False):
+def compressed_netcdf_save(
+        ds:xr.Dataset|xr.DataArray,
+        path:str,
+        shuffle:bool=True,
+        complevel:int=4,
+        fletcher32:bool=True,
+        encode_u:bool=False
+):
+    '''
+    saves the datatase using compression
+    Parameters
+    ----------
+    ds
+        input dataset or dataarray
+    path
+        path to be saved
+
+    shuffle
+        improves compression
+    complevel
+        compression level
+    fletcher32
+        improves compression?
+    encode_u
+        sometimes strings produce issues when compressing.
+        this takes care of it
+
+    Returns
+    -------
+
+    '''
     encoding = {}
     for k, v in ds.variables.items():
         encoding[k] = {
