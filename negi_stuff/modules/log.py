@@ -2,7 +2,11 @@
 # created by diego aliaga daliaga_at_chacaltaya.edu.bo
 '''
 this module tryes to make logging easier
+<<<<<<< HEAD
+>>> import negi_stuff.modules.log as log
+=======
 >>> import useful_scit.util.log as log
+>>>>>>> 69dbd14f57b1199a55ca49c696dccef0d90339bb
 >>> log.ger(log.log.DEBUG)
 >>> log.ger.debug('leg.ger level is %s', log.log.DEBUG)
 >>> log.ger.info('this message wont be shown')
@@ -12,10 +16,12 @@ this module tryes to make logging easier
 >>> log.print_levels()
 '''
 
+
 import logging as log
 
 log = log
-ger = log.getLogger('useful_scit')
+ger = log.getLogger('negi_stuff')
+
 handler = log.StreamHandler()
 formatter = log.Formatter(
     '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
