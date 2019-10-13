@@ -45,9 +45,9 @@ import cartopy.crs as ccrs
 proj_plate_carree = ccrs.PlateCarree()
 
 
-def create_cmap_from_color(color):
+def create_cmap_from_color(color, n_colors=10):
     # color = ucp.cc[1]
-    pal = sns.light_palette(color, input="rgb", n_colors=10)
+    pal = sns.light_palette(color, input="rgb", n_colors=n_colors)
     pal = np.array(pal)
     pal_n = len(pal)
     al = np.linspace(0, 1, pal_n)
@@ -58,10 +58,25 @@ def create_cmap_from_color(color):
 
 def calc_vmin_vmax(list_xr, quant=0.01):
     """
-    Calculates vmin/vmax for list of xr DataArrays. Convenient for plotting.
+    Calculates vmin/vmax for list of xr DataArrays. Convenient for plotting multiple subplots with same limits.
     :param list_xr: list of xarray DataArrays.
     :param quant: quantile to calculate vmin/vmax from
     :return: vmin, vmax
+
+    Example
+    -----
+    >>> from negi_stuff.modules.plot.plot import calc_vmin_vmax
+    >>> list_xr = []
+    >>> for i in range(5):
+    >>>      for data = np.random.rand(4, 5)
+    >>>      locs = np.arange(5)
+    >>>      times = pd.date_range('2000-01-01', periods=4)
+    >>>      foo = xr.DataArray(data, coords=[times, locs], dims=['time', 'space'])
+    >>>      list_xr.append(foo)
+    >>> vmin, vmax = calc_vmin_vmax(list_xr)
+    >>> fig, axs = plt.subplots(5)
+    >>> for ax, da in zip(axs, list_xr):
+    >>>      ax.plot(ax=ax, vmin=vmin, vmax=vmax)
     """
     max_v = -9e99
     min_v = 9e99
