@@ -14,6 +14,30 @@ so that all short names are in the name space
 be careful not to add any def that could shadow other definitions
 """
 
+############################
+#IMPORTS
+import pandas as pd
+import numpy as np
+import xarray as xr
+# import negi_stuff.modules.zarray as za
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
+import importlib as il
+import os
+import glob
+import datetime as dt
+import sys
+import cartopy as crt
+
+# list of thing to make ploting life easier.
+# import negi_stuff.plot as ucp
+
+# so that logging is out of the box
+import negi_stuff.modules.log as log
+
+
+############################
 
 def load_and_reload():
     '''
@@ -40,40 +64,17 @@ load_and_reload()
 
 
 
-
-
-import pandas as pd
-import numpy as np
-import xarray as xr
-# import useful_scit.util.zarray as za
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import seaborn as sns
-# import importlib as il
-import os
-import glob
-import datetime as dt
-import sys
-import cartopy as crt
-
-# list of thing to make ploting life easier.
-# import useful_scit.plot as ucp
-
-# so that logging is out of the box
-# import useful_scit.util.log as log
-
-
 # for plotting stuff
-from IPython.display import set_matplotlib_formats
+# from IPython.display import set_matplotlib_formats
 
-set_matplotlib_formats('png')
+# set_matplotlib_formats('png')
 
 
-plt.style.use('ggplot')
+# plt.style.use('ggplot')
 
 #bokeh
 
-# import useful_scit.plot.bokeh as bok
+# import negi_stuff.plot.bokeh as bok
 
 
 # general constants
@@ -83,10 +84,7 @@ pjoin = os.path.join
 
 splot = plt.subplots
 
-def axsplot(*args,**kwargs)->plt.Axes:
-    f,ax = plt.subplots(*args,**kwargs)
-    return ax
-axsplot.__doc__ = plt.subplots.__doc__
+
 
 
 
