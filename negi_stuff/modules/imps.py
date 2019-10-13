@@ -45,7 +45,7 @@ load_and_reload()
 import pandas as pd
 import numpy as np
 import xarray as xr
-import useful_scit.util.zarray as za
+# import useful_scit.util.zarray as za
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -57,12 +57,11 @@ import sys
 import cartopy as crt
 
 # list of thing to make ploting life easier.
-import useful_scit.plot as ucp
+# import useful_scit.plot as ucp
 
 # so that logging is out of the box
-import useful_scit.util.log as log
+# import useful_scit.util.log as log
 
-xr.open_dataset
 
 # for plotting stuff
 from IPython.display import set_matplotlib_formats
@@ -74,7 +73,7 @@ plt.style.use('ggplot')
 
 #bokeh
 
-import useful_scit.plot.bokeh as bok
+# import useful_scit.plot.bokeh as bok
 
 
 # general constants
