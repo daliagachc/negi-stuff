@@ -63,7 +63,6 @@ def load_and_reload():
 load_and_reload()
 
 
-
 # for plotting stuff
 # from IPython.display import set_matplotlib_formats
 
