@@ -45,7 +45,7 @@ load_and_reload()
 import pandas as pd
 import numpy as np
 import xarray as xr
-# import useful_scit.util.zarray as za
+import negi_stuff.modules.zarray as za
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -57,10 +57,10 @@ import sys
 import cartopy as crt
 
 # list of thing to make ploting life easier.
-# import useful_scit.plot as ucp
+import negi_stuff.modules.plot as ucp
 
 # so that logging is out of the box
-# import useful_scit.util.log as log
+import negi_stuff.modules.log as log
 
 
 # for plotting stuff
