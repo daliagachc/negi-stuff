@@ -14,8 +14,9 @@ so that all short names are in the name space
 be careful not to add any def that could shadow other definitions
 """
 
-############################
-#IMPORTS
+# %% imports
+
+
 import pandas as pd
 import numpy as np
 import xarray as xr
@@ -31,13 +32,13 @@ import sys
 import cartopy as crt
 
 # list of thing to make ploting life easier.
-# import negi_stuff.plot as ucp
+import negi_stuff.plot.plot as ucp
 
 # so that logging is out of the box
 import negi_stuff.modules.log as log
 
 
-############################
+# %% reload
 
 def load_and_reload():
     '''
@@ -62,6 +63,14 @@ def load_and_reload():
 
 load_and_reload()
 
+# %% shortcuts
+pjoin = os.path.join
+
+
+splot = plt.subplots
+
+# %%
+
 
 # for plotting stuff
 # from IPython.display import set_matplotlib_formats
@@ -76,14 +85,7 @@ load_and_reload()
 # import negi_stuff.plot.bokeh as bok
 
 
-# general constants
-
-pjoin = os.path.join
-
-
-splot = plt.subplots
-
-
+# useful shortcuts
 
 
 

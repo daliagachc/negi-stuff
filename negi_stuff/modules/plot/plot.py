@@ -17,7 +17,7 @@ def set_dpi(dpi: int):
     dpi
     Returns
     -------
-    
+
     Examples
     --
     >>> import negi_stuff.modules.plot as ucp
@@ -306,3 +306,10 @@ def broken_axis(axs, break_between, ax_break='y', d=0.015):
         axs[0].set_xlim([lims[0], break_between[0]])
         lims = axs[1].get_xlim()
         axs[1].set_xlim([break_between[1], lims[1]])
+
+
+def axsplot(*args,**kwargs)->plt.Axes:
+    f,ax = plt.subplots(*args,**kwargs)
+    return ax
+#lets copy the doc from subplots
+axsplot.__doc__ = plt.subplots.__doc__
