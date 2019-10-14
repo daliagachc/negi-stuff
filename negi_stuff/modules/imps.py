@@ -82,7 +82,7 @@ splot = plt.subplots
 
 #bokeh
 
-# import negi_stuff.plot.bokeh as bok
+import negi_stuff.modules.plot.bokeh as bok
 
 
 # useful shortcuts

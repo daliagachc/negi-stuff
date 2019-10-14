@@ -63,6 +63,7 @@ ds[P][{XT:0,BT:0}].plot(x=XLO,y=XLA)
 
 # %%
 
+
 # lets plot the wind fields
 _ds = ds[[V,U]][{BT:0}]
 _ds1 = np.sqrt(_ds[V]**2 + _ds[U]**2)
@@ -127,8 +128,3 @@ p.fig.canvas.draw()
 p.fig.tight_layout()
 p.add_colorbar(label='Wind Speed [m/s]');
 
-
-# %% [markdown]
-# ## Lets Explore time
-
-# %%
