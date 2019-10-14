@@ -20,7 +20,7 @@ be careful not to add any def that could shadow other definitions
 import pandas as pd
 import numpy as np
 import xarray as xr
-# import negi_stuff.modules.zarray as za
+import negi_stuff.modules.zarray as za
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -32,7 +32,7 @@ import sys
 import cartopy as crt
 
 # list of thing to make ploting life easier.
-import negi_stuff.plot.plot as ucp
+import negi_stuff.modules.plot.plot as ucp
 
 # so that logging is out of the box
 import negi_stuff.modules.log as log

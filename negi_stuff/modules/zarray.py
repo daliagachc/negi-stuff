@@ -6,7 +6,7 @@ import xarray as xr
 
 
 def compressed_netcdf_save(
-        ds:xr.Dataset|xr.DataArray,
+        ds:xr.Dataset,
         path:str,
         shuffle:bool=True,
         complevel:int=4,
