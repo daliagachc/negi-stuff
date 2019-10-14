@@ -29,13 +29,28 @@ path='../../data_sample/wrf_out.small.h5'
 ds = xr.open_dataset(path)
 
 # %%
+_slice = {BT:0,SN:10,WE:11}
 _da = ds[T]
+_da = _da[_slice] + 300
 
-_da = _da[{
-    BT:0,
-    SN:10,
-    WE:11
-}] + 300
+# %%
+la = ds[_slice][XLA].values
+lo = ds[_slice][XLO].values
+
+# %%
+import cartopy as cy
+
+# %%
+ax = plt.axes(projection=cy.crs.PlateCarree())
+ax.set_extent([ds[XLO].min(),
+               ds[XLO].max(),
+               ds[XLA].min(),
+               ds[XLA].max()
+              ])
+ax.scatter(lo,la)
+ax.coastlines()
+ax.add_feature(cy.feature.BORDERS);
+gl = ax.gridlines(draw_labels=True,color='k',alpha=.1)
 
 # %%
 _df = _da.to_dataframe()
@@ -59,19 +74,26 @@ ax.legend(title='quantiles')
 ax.figure
 
 # %%
-_df1 = _df
-_df1['day'] = _df.index.date
+from sklearn.linear_model import LinearRegression
 
 # %%
-fig, ax = plt.subplots()
-sns.lineplot(x='day',y='T',data = _df1.reset_index(),ax=ax)
-
+_df['secs']=_df.index.astype('int')/1e9
 
 # %%
-ax.plot_date(_df1['day'],_df1['T'],marker=',')
-fig.autofmt_xdate()
+model = LinearRegression()
 
 # %%
-ax.figure
+x = _df['secs'].values.reshape(-1,1)
+y = _df['T'   ].values.reshape(-1,1)
+
+# %%
+model.fit(x,y)
+
+# %%
+_df['x_predict']=model.predict(x).flatten()
+
+# %%
+_df['x_predict'].plot()
+_df['T'].plot(marker=',',linewidth=0)
 
 # %%

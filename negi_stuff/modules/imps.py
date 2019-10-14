@@ -2,10 +2,12 @@
 # created by diego aliaga daliaga_at_chacaltaya.edu.bo
 """
 useful imports for exploratory analysis should be used as:
-Example:
+Examples:
 better to do
-    from negi_stuff.modules.imps import (pd,np,xr,za,mpl,plt,sns, pjoin, os,glob,dt,
-    sys,ucp,log, splot, crt, axsplot)
+    from negi_stuff.modules.imps import (
+        pd, np, xr, za, mpl, plt, sns, pjoin, os,
+        glob, dt, sys, ucp, log, crt
+    )
 
 DEPRECATED (not recommended by convention)
     from from negi_stuff.modules.imps import *
@@ -40,6 +42,7 @@ import negi_stuff.modules.log as log
 
 # %% reload
 
+
 def load_and_reload():
     '''
     the code below automatically reload modules that
@@ -58,14 +61,14 @@ def load_and_reload():
         _ipython.magic('load_ext autoreload')
         _ipython.magic('autoreload 2')
     except:
-        #in case we are running a script
+        # in case we are running a script
         pass
+
 
 load_and_reload()
 
 # %% shortcuts
 pjoin = os.path.join
-
 
 splot = plt.subplots
 
@@ -80,12 +83,8 @@ splot = plt.subplots
 
 # plt.style.use('ggplot')
 
-#bokeh
+# bokeh
 
 import negi_stuff.modules.plot.bokeh as bok
 
-
 # useful shortcuts
-
-
-
