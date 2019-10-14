@@ -61,9 +61,9 @@ import cartopy.crs as ccrs
 fig, axsm = plt.subplots(2,2, figsize=[10,7], subplot_kw={'projection':ccrs.PlateCarree()})
 axs = axsm.flatten()
 _ds = ds[T_C][{BT:0}]
-_ds.mean(time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[0], transform=ccrs.PlateCarree())#, robust=True)
+_ds.mean(time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[0], transform=ccrs.PlateCarree(), robust=True)
 axs[0].set_title('Mean')
-_ds.median(time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[1], transform=ccrs.PlateCarree())#, robust=True)
+_ds.std(time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[1], transform=ccrs.PlateCarree())#, robust=True)
 axs[1].set_title('Std')
 _ds.quantile(0.05, dim=time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[2], transform=ccrs.PlateCarree())#, robust=True)
 _ds.quantile(0.95, dim=time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[3], transform=ccrs.PlateCarree())#, robust=True)

@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='negi_stuff',
     version='01',
-    packages=[''],
+    packages=['negi_stuff'],
     url='https://github.com/daliagachc/negi-stuff',
     license='MIT',
     author='diego aliaga, sara blichner',
