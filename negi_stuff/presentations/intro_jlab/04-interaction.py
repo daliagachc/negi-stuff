@@ -13,7 +13,6 @@
 # ---
 
 # %%
-??negi_stuff.modules.imps
 
 # %% [markdown]
 #
@@ -31,12 +30,34 @@
 #     - Negative
 #         - Notebooks can become unmanagable
 #         - Tendency to do repetitive tasks
+#         - hard to reuse
 
 # %% [markdown]
 # ## Imports
 
+# %% [markdown]
+# link to [imps](../../modules/imps.py) 
+
+# %% {"jupyter": {"outputs_hidden": true}}
+np.array([1,2])
+
+# %% {"jupyter": {"outputs_hidden": true}}
+plt.plot([1],[1])
+
 # %%
-link to [imps](../../modules/imps.py) 
+from negi_stuff.modules.imps import (
+        pd, np, xr, za, mpl, plt, sns, pjoin, os,
+        glob, dt, sys, ucp, log, crt
+    )
+
+# %% [markdown]
+# or if you want to be more intuitive although not recommended by convention
+
+# %%
+from negi_stuff.modules.imps import *
+
+# %% {"jupyter": {"outputs_hidden": true}}
+?? negi_stuff.modules.imps
 
 # %% [markdown]
 # ## Scripts
