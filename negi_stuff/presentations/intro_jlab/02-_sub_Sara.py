@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.2'
-#       jupytext_version: 1.2.4
+#       jupytext_version: 1.2.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -21,6 +21,7 @@
 import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
+import cartopy
 
 path='../../data_sample/wrf_out.small.h5'
 ds = xr.open_dataset(path)
@@ -70,7 +71,7 @@ _ds.quantile(0.95, dim=time, keep_attrs=True).plot(x=lon, y=lat,ax=axs[3], trans
 for ax in axs:
     ax.coastlines()
     gl = ax.gridlines()
-    ax.add_feature(cy.feature.BORDERS);
+    ax.add_feature(cartopy.feature.BORDERS);
 plt.tight_layout()
 
 # %%
@@ -82,12 +83,12 @@ ds[WS] = np.sqrt(ds[U]**2+ ds[V]**2)
 ds[WS].attrs['units']='m/s'
 ds[WS].attrs['name']='Wind strength'
 
-_ds = ds[[U,V, WS]][{BT:0}].mean(XT)
-_ds[WS].plot(x=XLO,y=XLA, transform=ccrs.PlateCarree())
-ax.quiver(_ds[XLO], _ds[XLA], _ds['U'],_ds['V'], transform=ccrs.PlateCarree())
+_ds = ds[[U,V, WS]][{BT:0}].mean(time)
+_ds[WS].plot(x=lon,y=lat, transform=ccrs.PlateCarree())
+ax.quiver(_ds[lon], _ds[lat], _ds['U'],_ds['V'], transform=ccrs.PlateCarree())
 ax.coastlines()
 gl = ax.gridlines()
-ax.add_feature(cy.feature.BORDERS);
+ax.add_feature(cartopy.feature.BORDERS);
 #plt.tight_layout()
 
 # %% [markdown]
@@ -96,22 +97,28 @@ ax.add_feature(cy.feature.BORDERS);
 # %%
 def sp_map(*nrs, projection = ccrs.PlateCarree(), **kwargs):
     return plt.subplots(*nrs, subplot_kw={'projection':projection}, **kwargs)
-    
+
 def add_map_features(ax):
     ax.coastlines()
-    gl = ax.gridlines()
-    ax.add_feature(cy.feature.BORDERS);
+    gl = ax.gridlines(draw_labels = True)
+    gl.xlabels_top = False
+    gl.ylabels_right = False
+    ax.add_feature(cartopy.feature.BORDERS);
 
 
 
 # %%
 fig, axs = sp_map(2,3, figsize=[15,8])
 
-T_mm = ds[T][{BT:0}].groupby('XTIME.month').mean(XT)
-T_mean = ds[T][{BT:0}].mean(XT)
+T_mm = ds[T][{BT:0}].groupby('XTIME.month').mean(time)
+T_mean = ds[T][{BT:0}].mean(time)
 T_dev = T_mm- T_mean
 T_mm.sel(month=1)
 for mo, ax in zip(T_mm['month'], axs.flatten()):
-    T_dev.sel(month=mo) .plot(ax=ax, transform=ccrs.PlateCarree())
+    T_dev.sel(month=mo) .plot(ax=ax, transform=ccrs.PlateCarree(), x = lon, y = lat)
     add_map_features(ax)
 
+
+# %%
+
+# %%

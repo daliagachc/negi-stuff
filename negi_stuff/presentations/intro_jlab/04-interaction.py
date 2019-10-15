@@ -12,16 +12,8 @@
 #     name: python3
 # ---
 
-# %%
-
 # %% [markdown]
-#
-
-# %% [markdown]
-#
-
-# %% [markdown]
-# ## Functions
+# ## Exploratory Data Analysis
 # - Exploratory Data Analysis in Jupyter Lab
 #     - Positive
 #         - Fast
@@ -38,32 +30,95 @@
 # %% [markdown]
 # link to [imps](../../modules/imps.py) 
 
-# %% {"jupyter": {"outputs_hidden": true}}
+# %%
 np.array([1,2])
 
-# %% {"jupyter": {"outputs_hidden": true}}
+# %%
 plt.plot([1],[1])
 
 # %%
-from negi_stuff.modules.imps import (
-        pd, np, xr, za, mpl, plt, sns, pjoin, os,
-        glob, dt, sys, ucp, log, crt
+from imports import (
+        pd, np, xr, za, mpl, plt, sns, os,
+        glob, dt, sys, crt
     )
 
 # %% [markdown]
 # or if you want to be more intuitive although not recommended by convention
 
 # %%
-from negi_stuff.modules.imps import *
-
-# %% {"jupyter": {"outputs_hidden": true}}
-?? negi_stuff.modules.imps
+from imports import *
 
 # %% [markdown]
-# ## Scripts
+# link to [imps](./imports.py) 
 
 # %%
-link to [script](04-interaction.py)
+np.array([1,2])
+
+# %% [markdown]
+# ## Scripts and Functions
+
+# %% [markdown]
+# link to 
+# [script](04-interaction.py)
+# (python) version of this notebook
+# (you need jupytext extension for it to work)
+
+# %%
+x = [1,2,3,4,5]
+y = [1,2,3,2,1]
+fig, ax = plt.subplots(figsize=(6,4))
+ax.plot(x,y)
+ax.set_title('Example Plot')
+ax.set_ylabel('y label')
+ax.set_xlabel('x label')
+ax.grid()
+
+
+# %% [markdown]
+# lets write a function for the code above
+
+# %%
+def custom_plot(x,y):
+    fig, ax = plt.subplots(figsize=(6,4))
+    ax.plot(x,y)
+    ax.set_title('Example Plot')
+    ax.set_ylabel('y label')
+    ax.set_xlabel('x label')
+    ax.grid()
+    return ax
+
+
+# %%
+ax = custom_plot([1,2,3],[3,2,1])
+
+# %% [markdown]
+# lets put the function in the functions.py file
+
+# %%
+import functions as fu
+
+# %%
+ax = fu.custom_plot([1,2,3],[3,2,1])
+
+# %%
+# %load_ext autoreload
+# %autoreload 2
+
+# %%
+
+# %%
+ax = fu.custom_plot([1,2,3],[3,2,1])
+
+# %%
+ax = fu.custom_plot([1,2,3],[3,2,1])
+
+# %% [markdown]
+# ok, so now we are ready to start a 
+# [notebook](./exploratory_data_analysis.ipynb)
+#
+
+# %%
+
 
 # %% [markdown]
 # ## Packages
