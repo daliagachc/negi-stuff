@@ -37,9 +37,9 @@ ds
 BT  = 'bottom_top'
 SN  = 'south_north'
 WE  = 'west_east'
-time  = 'XTIME'
-lat = 'XLAT'
-lon = 'XLONG'
+XT  = 'XTIME'
+XLA = 'XLAT'
+XLO = 'XLONG'
 P, V, U, T = 'P','V','U','T'
 
 #this is potential temperature in C
@@ -58,6 +58,7 @@ ds[T_C] = ds[T_C].assign_attrs({'units': 'C'})
 
 # %%
 import cartopy.crs as ccrs
+import cartopy as cy
 fig, axsm = plt.subplots(2,2, figsize=[10,7], subplot_kw={'projection':ccrs.PlateCarree()})
 axs = axsm.flatten()
 _ds = ds[T_C][{BT:0}]
@@ -75,6 +76,7 @@ plt.tight_layout()
 
 # %%
 import cartopy.crs as ccrs
+import cartopy as cy
 fig, ax = plt.subplots(1, figsize=[10,7], subplot_kw={'projection':ccrs.PlateCarree()})
 #axs = axsm.flatten()
 WS = 'Wind strength'
@@ -105,13 +107,105 @@ def add_map_features(ax):
 
 
 # %%
-fig, axs = sp_map(2,3, figsize=[15,8])
+fig, axs = sp_map(2,3, figsize=[18,8])
 
 T_mm = ds[T][{BT:0}].groupby('XTIME.month').mean(XT)
 T_mean = ds[T][{BT:0}].mean(XT)
 T_dev = T_mm- T_mean
 T_mm.sel(month=1)
 for mo, ax in zip(T_mm['month'], axs.flatten()):
-    T_dev.sel(month=mo) .plot(ax=ax, transform=ccrs.PlateCarree())
+    T_dev.sel(month=mo).plot(x=XLO, y=XLA,ax=ax, transform=ccrs.PlateCarree())
     add_map_features(ax)
+plt.tight_layout()
 
+
+# %%
+fig, axs = sp_map(2,3, figsize=[18,8])
+
+W_mm = ds[{BT:0}].groupby('XTIME.month').mean(XT)
+#W_mean = ds[T][{BT:0}].mean(XT)
+#T_dev = T_mm- T_mean
+#T_mm.sel(month=1)
+for mo, ax in zip(T_mm['month'], axs.flatten()):
+    _dsm = W_mm.sel(month=mo)
+    _dsm[WS].plot(x=XLO, y=XLA,ax=ax, transform=ccrs.PlateCarree())
+    ax.quiver(_dsm[XLO], _dsm[XLA], _dsm['U'],_dsm['V'], transform=ccrs.PlateCarree(), color='w')
+    
+    add_map_features(ax)
+plt.tight_layout()
+
+
+# %%
+_ds = ds.copy()
+_ds['south_north'] = ds[XLA][:,0]
+_ds = _ds.rename({'south_north':'lat'})
+_ds[U].mean([XT,'west_east']).plot.contourf(robust=True)
+
+# %%
+ds_dmax = ds.groupby('XTIME.day').max()
+ds_dmin = ds.groupby('XTIME.day').min()
+
+# %%
+ds_dmax
+
+# %%
+fig, axsm =sp_map(2,2, figsize = [12,7])
+axs = axsm.flatten()
+_max = ds_dmax[{BT:0}].mean('day')
+_min = ds_dmin[{BT:0}].mean('day')
+kwargs = { 'transform':ccrs.PlateCarree()}
+_max[T_C].plot(x=XLO, y=XLA, ax=axs[0],**kwargs )
+_min[T_C].plot(x=XLO, y=XLA,ax=axs[1],**kwargs )
+axs[0].set_title('T max')
+axs[1].set_title('T min')
+_max[WS].plot(x=XLO, y=XLA,ax=axs[2],**kwargs )
+_min[WS].plot(x=XLO, y=XLA,ax=axs[3],**kwargs )
+axs[2].set_title('Wind max')
+axs[3].set_title('Wind min')
+for ax in axs:
+    add_map_features(ax)
+plt.tight_layout()
+
+# %%
+CHC ={'XLAT':-16.20, 'XLONG':-40.6} 
+marine = {'XLAT':-16.44, 'XLONG': -72.24}
+amazonas = {'XLAT':-5.08, 'XLONG':-64.44}#'29.4"W
+
+# %%
+locations={'CHC':CHC, 'marine':marine, 'amazonas':amazonas}
+
+# %%
+locations = ['marine', 'CHC','amazonas']
+ds2 = ds.copy()
+ds2['south_north'] = ds2.XLAT[:,0]
+ds2['west_east']=ds2.XLONG[0,:]
+ds2=ds2.rename({'south_north':'lat','west_east':'lon'})
+
+# %%
+li=[]
+for loc in locations:
+    li.append(ds2.sel(lat=locations[loc]['XLAT'], lon=locations[loc]['XLONG'] , method='nearest'))
+
+ds_loc= xr.concat(li, dim='location')#{'LOC':list(locations.keys())})
+ds_loc['location']=list(locations.keys())
+ds_loc
+
+# %%
+fig, axs = plt.subplots(2,1, sharex=True)
+for loc in ds_loc.location.values:
+    ds_loc[{BT:0}]['Wind strength'].sel(location=loc).plot(label=loc,ax=axs[0])
+    axs[0].set_title('All values')
+    ds_loc[{BT:0}]['Wind strength'].sel(location=loc).rolling(XTIME=8).mean().plot(label=loc,ax=axs[1])
+    axs[1].set_title('Rolling 24 h mean')
+    
+axs[1].legend()
+plt.tight_layout()
+
+# %% [markdown]
+# ## Convert to pandas:
+
+# %%
+df_loc = ds_loc[{BT:0}].to_dataframe()
+
+# %%
+df_loc
