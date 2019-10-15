@@ -128,3 +128,5 @@ p.fig.canvas.draw()
 p.fig.tight_layout()
 p.add_colorbar(label='Wind Speed [m/s]');
 
+
+# %%

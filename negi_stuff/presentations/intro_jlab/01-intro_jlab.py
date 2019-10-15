@@ -13,6 +13,10 @@
 #     name: python3
 # ---
 
+# %%
+try: from negi_stuff.modules.imps import *
+except: pass
+
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 #
 #
@@ -22,6 +26,10 @@
 #
 #
 # NeGI Abisko 2019
+
+# %% [markdown]
+# repository for this presentation \
+# [negi-stuff](https://github.com/daliagachc/negi-stuff) (https://github.com/daliagachc/negi-stuff)
 
 # %% [markdown]
 # ***
@@ -37,6 +45,16 @@
 
 # %% [markdown] {"slideshow": {"slide_type": "-"}}
 # <img align="left" style="padding-right:10px;" src="imgs/jlab_level.png" width="400">
+
+# %% [markdown]
+# ***
+
+# %% [markdown]
+# ## Why Python?
+#
+# <img align="left" style="padding-right:10px;" src="imgs/stack_plot.svg" width="800">
+#
+# <small>(Source: [Stack Overflow](https://goo.gl/YwPocq))</small>
 
 # %% [markdown]
 # ***
@@ -81,8 +99,13 @@
 #     - Hot keys
 #     - Terminal
 #     - Contextual help
+#     - split view
+#     - output on separate window
 # - Extensions
 #     - Jupytext
+#     - TOC (table of contents)
+#     - jupyterlab_vim (if u like vim)
+#     - jupyterlab_templates (to create notebook templates)
 # - Inner workings of Jupyter
 #     - Kernels
 # - What is Jupyter Hub? 
