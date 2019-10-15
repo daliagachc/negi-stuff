@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.2'
-#       jupytext_version: 1.2.3
+#       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -32,6 +32,17 @@ ds = xr.open_dataset(path)
 #lets check how the dataset looks like
 ds
 
+# %% [markdown]
+# Assign attributes! Nice for plotting and to keep track of what is in your dataset (especially 'units' and 'standard_name'/'long_name' will be looked for by xarray. 
+
+# %%
+# lets process potential temperature into C
+ds['T_C'] = ds['T'] + 300 - 273
+ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
+
+# %% [markdown]
+# Easier to type if we define some names:
+
 # %%
 #lets define some constants for the variable names so that calling them is easier.
 BT  = 'bottom_top'
@@ -44,11 +55,6 @@ P, V, U, T = 'P','V','U','T'
 
 #this is potential temperature in C
 T_C = 'T_C'
-
-# %%
-# lets process potential temperature into C
-ds[T_C] = ds[T] + 300 - 273
-ds[T_C] = ds[T_C].assign_attrs({'units': 'C'})
 
 # %% [markdown]
 # ## Plotting
