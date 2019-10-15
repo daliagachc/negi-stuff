@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.2'
-#       jupytext_version: 1.2.3
+#       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -35,12 +35,6 @@ except: pass
 # ***
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# # Introduction
-
-# %% [markdown]
-# ***
-
-# %% [markdown] {"slideshow": {"slide_type": "subslide"}}
 # ## What do we know about Python?
 
 # %% [markdown] {"slideshow": {"slide_type": "-"}}
@@ -69,9 +63,7 @@ except: pass
 # # Jupyter
 
 # %% [markdown] {"slideshow": {"slide_type": "-"}}
-# <img align="left" style="padding-right:10px;" src="imgs/jupyter_logo.png" width="200">
-
-# %% [markdown] {"slideshow": {"slide_type": "subslide"}}
+#
 # <img align="left" style="padding-right:10px;" src="imgs/jup_img.png" width="500">
 
 # %% [markdown]
@@ -100,7 +92,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Outline:
 # - Overview of functionalities:
 #     - Console
