@@ -32,23 +32,39 @@ ds = xr.open_dataset(path)
 #lets check how the dataset looks like
 ds
 
+# %% [markdown]
+# Assign attributes! Nice for plotting and to keep track of what is in your dataset (especially 'units' and 'standard_name'/'long_name' will be looked for by xarray. 
+
+# %% [markdown]
+# **Check the attributes! Can be useful info here:**
+
+# %%
+ds['XTIME']
+
+# %%
+# lets process potential temperature into C
+ds['T_C'] = ds['T'] + 300 - 273
+ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
+
+# %% [markdown]
+# Easier to type if we define some names:
+
 # %%
 #lets define some constants for the variable names so that calling them is easier.
 BT  = 'bottom_top'
+ilev = 'bottom_top'
 SN  = 'south_north'
 WE  = 'west_east'
 XT  = 'XTIME'
+time = 'XTIME'
 XLA = 'XLAT'
+lat = 'XLAT'
 XLO = 'XLONG'
+lon = 'XLONG'
 P, V, U, T = 'P','V','U','T'
 
 #this is potential temperature in C
 T_C = 'T_C'
-
-# %%
-# lets process potential temperature into C
-ds[T_C] = ds[T] + 300 - 273
-ds[T_C] = ds[T_C].assign_attrs({'units': 'C'})
 
 # %% [markdown]
 # ## Plotting
@@ -86,7 +102,7 @@ ds[WS].attrs['name']='Wind strength'
 
 _ds = ds[[U,V, WS]][{BT:0}].mean(XT)
 _ds[WS].plot(x=XLO,y=XLA, transform=ccrs.PlateCarree())
-ax.quiver(_ds[XLO], _ds[XLA], _ds['U'],_ds['V'], transform=ccrs.PlateCarree())
+ax.quiver(_ds[lon], _ds[lat], _ds['U'],_ds['V'], transform=ccrs.PlateCarree())
 ax.coastlines()
 gl = ax.gridlines()
 ax.add_feature(cy.feature.BORDERS);
