@@ -35,6 +35,12 @@ ds
 # %% [markdown]
 # Assign attributes! Nice for plotting and to keep track of what is in your dataset (especially 'units' and 'standard_name'/'long_name' will be looked for by xarray. 
 
+# %% [markdown]
+# **Check the attributes! Can be useful info here:**
+
+# %%
+ds['XTIME']
+
 # %%
 # lets process potential temperature into C
 ds['T_C'] = ds['T'] + 300 - 273
@@ -65,7 +71,7 @@ ds[T_C][{XT:0, BT:0}].plot(x=XLO, y=XLA)
 
 # %%
 # lets do a basic plot of P
-ds[P][{XT:0,BT:0}].plot(x=XLO,y=XLA)
+ds[P][{XT:0,BT:0}].plot(x=XLO,y=XLA)Okey, so do u wanna do the first 
 
 # %%
 
