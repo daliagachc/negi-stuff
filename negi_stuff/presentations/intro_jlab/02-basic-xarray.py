@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.2'
-#       jupytext_version: 1.2.4
+#       jupytext_version: 1.2.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -33,7 +33,7 @@ ds = xr.open_dataset(path)
 ds
 
 # %% [markdown]
-# Assign attributes! Nice for plotting and to keep track of what is in your dataset (especially 'units' and 'standard_name'/'long_name' will be looked for by xarray. 
+# Assign attributes! Nice for plotting and to keep track of what is in your dataset (especially 'units' and 'standard_name'/'long_name' will be looked for by xarray.
 
 # %% [markdown]
 # **Check the attributes! Can be useful info here:**
@@ -51,12 +51,12 @@ ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
 
 # %%
 #lets define some constants for the variable names so that calling them is easier.
-BT  = 'bottom_top'
+ilev  = 'bottom_top'
 SN  = 'south_north'
 WE  = 'west_east'
 XT  = 'XTIME'
-XLA = 'XLAT'
-XLO = 'XLONG'
+lat = 'XLAT'
+lon = 'XLONG'
 P, V, U, T = 'P','V','U','T'
 
 #this is potential temperature in C
@@ -67,22 +67,22 @@ T_C = 'T_C'
 
 # %%
 # lets do a basic plot of T_C
-ds[T_C][{XT:0, BT:0}].plot(x=XLO, y=XLA)
+ds[T_C][{XT:0, ilev:0}].plot(x=lon, y=lat)
 
 # %%
 # lets do a basic plot of P
-ds[P][{XT:0,BT:0}].plot(x=XLO,y=XLA)Okey, so do u wanna do the first 
+ds[P][{XT:0, ilev:0}].plot(x=lon, y=lat)
 
 # %%
 
 
 # lets plot the wind fields
-_ds = ds[[V,U]][{BT:0}]
+_ds = ds[[V,U]][{ilev:0}]
 _ds1 = np.sqrt(_ds[V]**2 + _ds[U]**2)
 f,ax = plt.subplots()
 _dm = _ds1.mean(XT)
 _dm.plot.pcolormesh(cmap = plt.get_cmap('Reds'),ax=ax,cbar_kwargs={'label':'Wind Speed [m/s]'})
-ax.set_title('BT:0; Mean over Time')
+ax.set_title('ilev:0; Mean over Time')
 
 # %% [markdown]
 # #### Plotting with cartopy
@@ -92,15 +92,15 @@ import cartopy as cy
 
 # %%
 f,ax = plt.subplots(subplot_kw={'projection':cy.crs.PlateCarree()})
-_ds = ds[[V,U]][{BT:0}]
+_ds = ds[[V,U]][{ilev:0}]
 _ds1 = np.sqrt(_ds[V]**2 + _ds[U]**2)
 _dm = _ds1.mean(XT)
 _dm.plot.pcolormesh(
     cmap = plt.get_cmap('Reds'),ax=ax,cbar_kwargs={'label':'Wind Speed [m/s]'},
-    transform=cy.crs.PlateCarree(), x=XLO,y=XLA,
+    transform=cy.crs.PlateCarree(), x=lon,y=lat,
     levels = 6
 )
-ax.set_title('BT:0; Mean over Time')
+ax.set_title('ilev:0; Mean over Time')
 ax.coastlines()
 
 gl = ax.gridlines(draw_labels=True)
@@ -111,14 +111,14 @@ ax.add_feature(cy.feature.BORDERS);
 
 # %%
 # f,ax = plt.subplots(subplot_kw={'projection':cy.crs.PlateCarree()})
-_ds = ds[[V,U]][{BT:slice(None,None,2)}]
+_ds = ds[[V,U]][{ilev:slice(None, None, 2)}]
 _ds1 = np.sqrt(_ds[V]**2 + _ds[U]**2)
 _dm = _ds1.mean(XT)
 p = _dm.plot.pcolormesh(
     cmap = plt.get_cmap('Reds'),cbar_kwargs={'label':'Wind Speed [m/s]'},
-    transform=cy.crs.PlateCarree(), x=XLO,y=XLA,
+    transform=cy.crs.PlateCarree(), x=lon,y=lat,
     levels = 6,
-    col=BT,
+    col=ilev,
     col_wrap = 3,
     subplot_kws={'projection':cy.crs.PlateCarree(),},
     add_colorbar = False,
@@ -126,7 +126,7 @@ p = _dm.plot.pcolormesh(
     aspect = 1.7
 )
 for ax in p.axes.flatten():
-#     ax.set_title('BT:0; Mean over Time')
+#     ax.set_title('ilev:0; Mean over Time')
     ax.coastlines()
 
     gl = ax.gridlines(draw_labels=True)
