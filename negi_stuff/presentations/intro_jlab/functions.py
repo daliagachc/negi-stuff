@@ -14,15 +14,20 @@
 
 # %%
 
-from imports import *
+# from imports import *
+import matplotlib.pyplot as plt
 
 def custom_plot(x,y):
-    fig, ax = plt.subplots(figsize=(6,4))
+    '''
+    life easier for plotting.
+    it will plot x against y 
+    '''
+    fig, ax = plt.subplots(figsize=(8,4))
     ax.plot(x,y)
     ax.set_title('Example Plot')
-    ax.set_ylabel('y label')
-    ax.set_xlabel('x label')
+    ax.set_ylabel('yyy label')
+    ax.set_xlabel('xxxxx label')
     ax.grid()
     return ax
 
-# a
+# 

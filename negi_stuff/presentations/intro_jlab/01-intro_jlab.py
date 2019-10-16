@@ -34,7 +34,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# %% [markdown] {"slideshow": {"slide_type": "slide"}, "toc-hr-collapsed": true}
 # # Introduction
 
 # %% [markdown]
@@ -65,7 +65,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# %% [markdown] {"slideshow": {"slide_type": "slide"}, "toc-hr-collapsed": true}
 # # Jupyter
 
 # %% [markdown] {"slideshow": {"slide_type": "-"}}
@@ -88,7 +88,7 @@ except: pass
 # ![](imgs/Fieldnotes_jlab.png)
 # [Jupyter org](http://jupyter.org/)
 
-# %% [markdown]
+# %% [markdown] {"toc-hr-collapsed": true}
 # # Jupyter Notebooks 
 # ## Web Resources
 #
@@ -125,3 +125,24 @@ except: pass
 
 # %% [markdown]
 # ***
+
+# %%
+import numpy as np
+
+# %%
+np.array()
+
+# %%
+
+# %%
+import matplotlib.pyplot as plt
+
+# %%
+plt.plot([1,2],[1,10])
+
+# %% {"jupyter": {"source_hidden": true}}
+
+x = 3 
+
+for i in range(10)
+    print(a)

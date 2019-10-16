@@ -48,11 +48,18 @@ from imports import (
 # %%
 from imports import *
 
+# %%
+
+# %%
+
 # %% [markdown]
 # link to [imps](./imports.py) 
 
 # %%
 np.array([1,2])
+
+# %%
+plt.plot([1,2],[1,2])
 
 # %% [markdown]
 # ## Scripts and Functions

@@ -13,10 +13,26 @@
 # ---
 
 # %%
+
+"""
+useful imports for exploratory analysis should be used as:
+Examples:
+better to do
+    from imports import (
+        pd, np, xr, mpl, plt, sns, os,
+        glob, dt, sys, ucp, log, crt
+    )
+
+DEPRECATED (not recommended by convention)
+    from imports import *
+
+so that all short names are in the name space
+be careful not to add any def that could shadow other definitions
+"""
+
 import pandas as pd
 import numpy as np
 import xarray as xr
-import negi_stuff.modules.zarray as za
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -28,26 +44,26 @@ import sys
 import cartopy as crt
 import random
 
-# def load_and_reload():
-#     '''
-#     the code below automatically reload modules that
-#     have being changed when you run any cell.
-#     If you want to call in directly from a notebook you
-#     can use:
-#     Example
-#     ---
-#     >>> %load_ext autoreload
-#     >>> %autoreload 2
-#     '''
-#     from IPython import get_ipython
+def load_and_reload():
+    '''
+    the code below automatically reload modules that
+    have being changed when you run any cell.
+    If you want to call in directly from a notebook you
+    can use:
+    Example
+    ---
+    >>> %load_ext autoreload
+    >>> %autoreload 2
+    '''
+    from IPython import get_ipython
 
-#     try:
-#         _ipython = get_ipython()
-#         _ipython.magic('load_ext autoreload')
-#         _ipython.magic('autoreload 2')
-#     except:
-#         # in case we are running a script
-#         pass
+    try:
+        _ipython = get_ipython()
+        _ipython.magic('load_ext autoreload')
+        _ipython.magic('autoreload 2')
+    except:
+        # in case we are running a script
+        pass
 
 
-# load_and_reload()
+load_and_reload()
