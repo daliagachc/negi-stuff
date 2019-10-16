@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 try: from negi_stuff.modules.imps import *
 except: pass
 
@@ -55,7 +55,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Why Python?
 #
 # <img align="left" style="padding-right:10px;" src="imgs/stack_plot.svg" width="800">
@@ -74,7 +74,7 @@ except: pass
 # %% [markdown] {"slideshow": {"slide_type": "subslide"}}
 # <img align="left" style="padding-right:10px;" src="imgs/jup_img.png" width="500">
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Why do we use jupyter lab?
 # - Easy to use, easy to share!
 #     - You can share code, plots and text together --> makes easy to follow description of your work 
@@ -88,7 +88,11 @@ except: pass
 # ![](imgs/Fieldnotes_jlab.png)
 # [Jupyter org](http://jupyter.org/)
 
+<<<<<<< HEAD
 # %% [markdown] {"toc-hr-collapsed": true}
+=======
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+>>>>>>> b5b1aa146216022efe6eadf2f0437695a7f26ffe
 # # Jupyter Notebooks 
 # ## Web Resources
 #
@@ -122,6 +126,7 @@ except: pass
 
 # %% [markdown]
 # ***
+<<<<<<< HEAD
 
 # %% [markdown]
 # ***
@@ -146,3 +151,5 @@ x = 3
 
 for i in range(10)
     print(a)
+=======
+>>>>>>> b5b1aa146216022efe6eadf2f0437695a7f26ffe
