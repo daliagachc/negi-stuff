@@ -52,7 +52,7 @@ ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
 # %%
 #lets define some constants for the variable names so that calling them is easier.
 ilev  = 'bottom_top'
-SN  = 'south_north'
+SNMeaningul  = 'south_north'
 WE  = 'west_east'
 XT  = 'XTIME'
 lat = 'XLAT'

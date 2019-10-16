@@ -13,10 +13,26 @@
 # ---
 
 # %%
+
+"""
+useful imports for exploratory analysis should be used as:
+Examples:
+better to do
+    from imports import (
+        pd, np, xr, mpl, plt, sns, os,
+        glob, dt, sys, ucp, log, crt
+    )
+
+DEPRECATED (not recommended by convention)
+    from imports import *
+
+so that all short names are in the name space
+be careful not to add any def that could shadow other definitions
+"""
+
 import pandas as pd
 import numpy as np
 import xarray as xr
-#import negi_stuff.modules.zarray as za
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -50,4 +66,5 @@ def load_and_reload():
         pass
 
 
-load_and_reload() 
+load_and_reload()
+

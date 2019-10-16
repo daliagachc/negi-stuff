@@ -34,7 +34,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# %% [markdown] {"slideshow": {"slide_type": "slide"}, "toc-hr-collapsed": true}
 # # Introduction
 
 # %% [markdown]
@@ -65,7 +65,7 @@ except: pass
 # %% [markdown]
 # ***
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# %% [markdown] {"slideshow": {"slide_type": "slide"}, "toc-hr-collapsed": true}
 # # Jupyter
 
 # %% [markdown] {"slideshow": {"slide_type": "-"}}
@@ -88,7 +88,11 @@ except: pass
 # ![](imgs/Fieldnotes_jlab.png)
 # [Jupyter org](http://jupyter.org/)
 
+<<<<<<< HEAD
+# %% [markdown] {"toc-hr-collapsed": true}
+=======
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
+>>>>>>> b5b1aa146216022efe6eadf2f0437695a7f26ffe
 # # Jupyter Notebooks 
 # ## Web Resources
 #
@@ -122,3 +126,30 @@ except: pass
 
 # %% [markdown]
 # ***
+<<<<<<< HEAD
+
+# %% [markdown]
+# ***
+
+# %%
+import numpy as np
+
+# %%
+np.array()
+
+# %%
+
+# %%
+import matplotlib.pyplot as plt
+
+# %%
+plt.plot([1,2],[1,10])
+
+# %% {"jupyter": {"source_hidden": true}}
+
+x = 3 
+
+for i in range(10)
+    print(a)
+=======
+>>>>>>> b5b1aa146216022efe6eadf2f0437695a7f26ffe

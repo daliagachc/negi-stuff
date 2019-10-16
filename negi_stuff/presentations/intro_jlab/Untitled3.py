@@ -13,16 +13,8 @@
 # ---
 
 # %%
-from imports import (
-        pd, np, xr, za, mpl, plt, sns, os,
-        glob, dt, sys, crt
-    )
-
-
-# %%
-import functions as fu
-
-# %%
-ax = fu.custom_plot([1,2,3],[3,4,5])
+from useful_scit.imps import (pd, np, xr, za, mpl, plt, sns, pjoin, os, glob,
+                              dt, sys, ucp, log, splot, crt, axsplot)
+ucp.set_dpi(300)
 
 # %%
