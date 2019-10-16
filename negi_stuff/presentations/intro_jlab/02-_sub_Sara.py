@@ -52,10 +52,15 @@ ds['XTIME']
 # lets process potential temperature into C
 ds['T_C'] = ds['T'] + 300 - 273
 ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
+ds['T_C'] = ds['T_C'].assign_attrs({'description': 'Temperature in C'})
+
+# %%
+ds['T_C'].attrs
 
 # %%
 # lets do a basic plot of T_C
-ds['T_C'].isel(XTIME=0,bottom_top=0).plot()
+_ds = ds['T_C'].isel(XTIME=0,bottom_top=0)
+_ds.plot()
 # analogy:
 #ds[T_C][{ilev:0,time:0}].plot()
 
@@ -83,8 +88,8 @@ lat = 'lat'
 lon = 'lon'
 XT  = 'XTIME'
 time = 'XTIME'
-lat = 'XLAT'
-lon = 'XLONG'
+#lat = 'XLAT'
+#lon = 'XLONG'
 P, V, U, T = 'P','V','U','T'
 
 #this is potential temperature in C
@@ -109,7 +114,7 @@ WS = 'Wind speed'
 ds[WS] = np.sqrt(ds[U]**2+ ds[V]**2)
 
 ds[WS].attrs['units']='m/s'
-ds[WS].attrs['name']='Wind speed'
+ds[WS].attrs['long_name']='Wind SPEED'
 
 # %% [markdown]
 # ## Use cartopy
@@ -118,13 +123,14 @@ ds[WS].attrs['name']='Wind speed'
 import cartopy as cy
 
 # %%
-f,ax = plt.subplots(subplot_kw={'projection':cy.crs.PlateCarree()})
+f,ax = plt.subplots(subplot_kw={'projection' : cy.crs.PlateCarree()})
 _ds = ds[{ilev:0}]
-_dm = _ds[WS].mean(time, keep_attrs=True)
+_dm = _ds[WS].mean([time])#, keep_attrs=True)
+
 _dm.plot.pcolormesh(
     cmap     = plt.get_cmap('Reds'),
     ax       = ax,
-    transform= cy.crs.PlateCarree(),
+    transform = cy.crs.PlateCarree(),
     levels   = 6
 )
 
@@ -174,7 +180,7 @@ fig, ax = plt.subplots(1,
                        figsize=[10,7], 
                        subplot_kw={'projection':ccrs.PlateCarree()})
 
-_ds = ds[[U,V, WS]][{ilev:0}].mean(XT) #keep_attrs=True)
+_ds = ds[[U,V, WS]][{ilev:0}].mean(XT, keep_attrs=True)
 _ds[WS].plot(x=lon, y=lat, transform=ccrs.PlateCarree())
 ax.quiver(_ds[lon], 
           _ds[lat], 
@@ -204,16 +210,21 @@ def add_map_features(ax):
 
 
 
+# %% [markdown]
+# ## Groupby
+
 # %%
 fig, axs = sp_map(2,3, figsize=[18,8], sharex=True, sharey=True)
 
 # Use groupby! (doesn't need to be in time):
 T_mm = ds[T][{ilev:0}].groupby('XTIME.month').mean(XT)
+
 T_mean = ds[T][{ilev:0}].mean(XT)
 # let's check the deviation from the mean over the whole period! (Easier to see)
 
 # MARK: THIS WOULD NOT WORK IN NUMPY!
-T_dev = T_mm- T_mean
+T_dev = T_mm - T_mean
+
 for mo, ax in zip(T_mm['month'], axs.flatten()):
     T_dev.sel(month=mo).plot(x=lon, y=lat, ax=ax, transform=ccrs.PlateCarree())
     add_map_features(ax)
@@ -240,7 +251,7 @@ plt.tight_layout()
 # ## Lev lat plot:
 
 # %%
-ds[U].mean([time, 'lon']).plot.contourf(robust=True)
+ds[U].mean([time, lon]).plot.contourf(robust=True)
 
 # %% [markdown]
 # ## Typical pandas methods often apply (or have an analogy): Daily max, daily min.
@@ -281,6 +292,9 @@ _ds = ds[{ilev:0}]
 ds_chc = _ds.sel(lat=CHC['lat'], 
                  lon=CHC['lon'],
                  method='nearest')
+
+# %%
+ds_chc
 
 # %%
 ax = plt.axes(projection=cy.crs.PlateCarree())
