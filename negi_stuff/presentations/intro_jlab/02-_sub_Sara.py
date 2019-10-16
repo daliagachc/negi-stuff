@@ -29,7 +29,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 # or
 # from imports import (plt, np, xr)
-path='../../data_sample/wrf_out.small.h5'
+path='../../data_sample/wrf_out.small.h5' 
 ds = xr.open_dataset(path)#, decode_times=False)
 
 # %% [markdown]
@@ -55,7 +55,7 @@ ds['T_C'] = ds['T_C'].assign_attrs({'units': 'C'})
 
 # %%
 # lets do a basic plot of T_C
-ds[T_C].isel(XTIME=0,bottom_top=0).plot()
+ds['T_C'].isel(XTIME=0,bottom_top=0).plot()
 # analogy:
 #ds[T_C][{ilev:0,time:0}].plot()
 
@@ -65,9 +65,10 @@ ds[T_C].isel(XTIME=0,bottom_top=0).plot()
 # %%
 # Initially just a number, I want the actual latitude!
 ds['south_north'] = ds.XLAT[:,0]
-ds['west_east']=ds.XLONG[0,:]
+ds['west_east']   = ds.XLONG[0,:]
 # Rename them!
-ds=ds.rename({'south_north':'lat','west_east':'lon'})
+ds=ds.rename({'south_north':'lat',
+              'west_east'  :'lon'    })
 
 # %%
 ## from zarray import : 
@@ -95,6 +96,7 @@ T_C = 'T_C'
 # %%
 # lets do a basic plot of T_C
 ds[T_C].isel(XTIME=0,bottom_top=0).plot()
+
 # analogy:
 #ds[T_C][{ilev:0,time:0}].plot()
 
@@ -102,10 +104,12 @@ ds[T_C].isel(XTIME=0,bottom_top=0).plot()
 # ### Make new variables:
 
 # %%
-WS = 'Wind strength'
+WS = 'Wind speed'
+
 ds[WS] = np.sqrt(ds[U]**2+ ds[V]**2)
+
 ds[WS].attrs['units']='m/s'
-ds[WS].attrs['name']='Wind strength'
+ds[WS].attrs['name']='Wind speed'
 
 # %% [markdown]
 # ## Use cartopy
@@ -117,15 +121,18 @@ import cartopy as cy
 f,ax = plt.subplots(subplot_kw={'projection':cy.crs.PlateCarree()})
 _ds = ds[{ilev:0}]
 _dm = _ds[WS].mean(time, keep_attrs=True)
-_dm.plot.pcolormesh(cmap = plt.get_cmap('Reds'),ax=ax,
-    transform=cy.crs.PlateCarree(),
-    levels = 6
+_dm.plot.pcolormesh(
+    cmap     = plt.get_cmap('Reds'),
+    ax       = ax,
+    transform= cy.crs.PlateCarree(),
+    levels   = 6
 )
+
 ax.set_title('BT:0; Mean over Time')
 ax.coastlines()
 
 gl = ax.gridlines(draw_labels=True)
-gl.xlabels_top = False
+gl.xlabels_top   = False
 gl.ylabels_right = False
 ax.add_feature(cy.feature.BORDERS);
 
@@ -135,7 +142,9 @@ ax.add_feature(cy.feature.BORDERS);
 # %%
 import cartopy.crs as ccrs
 import cartopy as cy
-fig, axsm = plt.subplots(2,2, figsize=[10,7], subplot_kw={'projection':ccrs.PlateCarree()})
+fig, axsm = plt.subplots(2,2, 
+                         figsize=[10,7], 
+                         subplot_kw={'projection':ccrs.PlateCarree()})
 axs = axsm.flatten()
 _ds = ds[T_C][{ilev:0}]
 _ds.mean(time, keep_attrs=True).plot(ax=axs[0], 
@@ -161,11 +170,17 @@ plt.tight_layout()
 # %%
 import cartopy.crs as ccrs
 import cartopy as cy
-fig, ax = plt.subplots(1, figsize=[10,7], subplot_kw={'projection':ccrs.PlateCarree()})
+fig, ax = plt.subplots(1, 
+                       figsize=[10,7], 
+                       subplot_kw={'projection':ccrs.PlateCarree()})
 
 _ds = ds[[U,V, WS]][{ilev:0}].mean(XT) #keep_attrs=True)
 _ds[WS].plot(x=lon, y=lat, transform=ccrs.PlateCarree())
-ax.quiver(_ds[lon], _ds[lat], _ds['U'],_ds['V'], transform=ccrs.PlateCarree())
+ax.quiver(_ds[lon], 
+          _ds[lat], 
+          _ds['U'],
+          _ds['V'], 
+          transform=ccrs.PlateCarree())
 ax.coastlines()
 gl = ax.gridlines()
 ax.add_feature(cy.feature.BORDERS);
@@ -191,6 +206,7 @@ def add_map_features(ax):
 
 # %%
 fig, axs = sp_map(2,3, figsize=[18,8], sharex=True, sharey=True)
+
 # Use groupby! (doesn't need to be in time):
 T_mm = ds[T][{ilev:0}].groupby('XTIME.month').mean(XT)
 T_mean = ds[T][{ilev:0}].mean(XT)
@@ -212,7 +228,9 @@ W_mm = ds[{ilev:0}].groupby('XTIME.month').mean(XT)
 for mo, ax in zip(T_mm['month'], axs.flatten()):
     _dsm = W_mm.sel(month=mo)
     _dsm[WS].plot(x=lon, y=lat, ax=ax, transform=ccrs.PlateCarree())
-    ax.quiver(_dsm[lon], _dsm[lat], _dsm['U'], _dsm['V'], transform=ccrs.PlateCarree(), color='w')
+    ax.quiver(_dsm[lon], _dsm[lat], 
+              _dsm['U'], _dsm['V'], 
+              transform=ccrs.PlateCarree(), color='w')
 
     add_map_features(ax)
 plt.tight_layout()
@@ -222,10 +240,7 @@ plt.tight_layout()
 # ## Lev lat plot:
 
 # %%
-_ds = ds.copy()
-_ds['south_north'] = ds[lat][:, 0]
-_ds = _ds.rename({'south_north':'lat'})
-_ds[U].mean([XT,'west_east']).plot.contourf(robust=True)
+ds[U].mean([time, 'lon']).plot.contourf(robust=True)
 
 # %% [markdown]
 # ## Typical pandas methods often apply (or have an analogy): Daily max, daily min.
@@ -259,7 +274,13 @@ CHC =      {'lat' : -16.34, 'lon' : -68.12}
 #amazonas = {'lat' : -5.08,  'lon' : -64.44}
 
 # %%
-ds_chc = ds.sel(lat=CHC['lat'], lon=CHC['lon'], method='nearest')
+ds
+
+# %%
+_ds = ds[{ilev:0}]
+ds_chc = _ds.sel(lat=CHC['lat'], 
+                 lon=CHC['lon'],
+                 method='nearest')
 
 # %%
 ax = plt.axes(projection=cy.crs.PlateCarree())
@@ -277,12 +298,6 @@ gl = ax.gridlines(draw_labels=True,color='k',alpha=.1)
 _df = ds_chc.to_dataframe()
 
 # %%
-f = bok.figure_dt()
-f.line(source=_df,x='XTIME',y='T')
-f.plot_height = 200
-bok.show(f)
-
-# %%
 f, ax = plt.subplots()
 _group = _df['T'].groupby(_df.index.hour)
 qs = [.25,.5,.75]
@@ -294,74 +309,11 @@ ax.set_title(ds['T'].description)
 ax.legend(title='quantiles')
 ax.figure
 
-# %%
-from sklearn.linear_model import LinearRegression
-
-# %%
-_df['secs']=_df.index.astype('int')/1e9
-
-# %%
-model = LinearRegression()
-
-# %%
-x = _df['secs'].values.reshape(-1,1)
-y = _df['T'   ].values.reshape(-1,1)
-
-# %%
-model.fit(x,y)
-
-# %%
-_df['x_predict']=model.predict(x).flatten()
-
-# %%
-_df['x_predict'].plot()
-_df['T'].plot(marker=',',linewidth=0)
-
-# %%
-
-# %%
-locations={'CHC':CHC, 'marine':marine, 'amazonas':amazonas}
-
-# %%
-ds2 = ds.copy()
-ds2['south_north'] = ds2.XLAT[:,0]
-ds2['west_east']=ds2.XLONG[0,:]
-ds2=ds2.rename({'south_north':'lat','west_east':'lon'})
-
-# %%
-ds
-
-# %%
-li=[]
-for loc in locations:
-    slat = locations[loc]['lat']
-    slon = locations[loc]['lon']
-    ds_loc = ds2.sel(lat=slat, 
-                     lon=slon , 
-                     method='nearest')
-    li.append(ds_loc)
-
-# %%
-ds_loc= xr.concat(li, dim='location')#{'LOC':list(locations.keys())})
-ds_loc['location']=list(locations.keys())
-ds_loc
-
-# %%
-fig, axs = plt.subplots(2,1, sharex=True)
-for loc in ds_loc.location.values:
-    ds_loc[{ilev:0}]['Wind strength'].sel(location=loc).plot(label=loc, ax=axs[0])
-    axs[0].set_title('All values')
-    ds_loc[{ilev:0}]['Wind strength'].sel(location=loc).rolling(XTIME=8).mean().plot(label=loc, ax=axs[1])
-    axs[1].set_title('Rolling 24 h mean')
-
-axs[1].legend()
-plt.tight_layout()
-
 # %% [markdown]
-# ## Convert to pandas:
+# #### More plotting with pandas:
+# - https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html
+#
 
 # %%
-df_loc = ds_loc[{ilev:0}].to_dataframe()
-
-# %%
-df_loc
+import seaborn as sns
+sns.distplot(_df['T'])
