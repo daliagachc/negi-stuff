@@ -125,7 +125,7 @@ def masked_average(xa, dim=None, weights=None, mask=None):
     :param dim: dims
     :param weights: weights (as xarray)
     :param mask: mask (as xarray), True where values to be masked.
-    :return:
+    :return: masked average xarray
     """
     xa_ = xa.copy()
     if mask is not None:
@@ -142,6 +142,19 @@ def masked_average(xa, dim=None, weights=None, mask=None):
         return (xa_*weights_alld).sum(dim)/weights_alld.where(xa_.notnull()).sum(dim=dim)
     else:
         return xa.mean(dim)
+
+
+
+def get_wghts(lat):
+    """
+    get latitude weights for gaussian grid.
+    :param lat: latitudes
+    :return: weights
+    """
+    latr = np.deg2rad(lat) # convert to radians
+    weights = np.cos(latr) # calc weights
+    return weights
+
 
 
 def search_keyword(ds, *keys, print_attrs=True):
