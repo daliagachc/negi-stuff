@@ -6,11 +6,11 @@ import os,glob
 import pandas as pd
 from pathlib import Path
 
-FILES = 'FILE'
+FILES = 'FILE_PATH'
 MODEL = 'MODEL'
-VAR = 'VARIABLE'
-NAME  = 'NAME'
-MON   = 'MON'
+VAR = 'VAR_NAME'
+NAME  = 'filename'
+FRQ   = 'FREQUENCY'
 RIPF  = 'RIPF'
 RR   = 'REALIZATION'
 II    = 'INDEX'
@@ -57,22 +57,27 @@ def search_cmip6_hist(
     historical_path = os.path.join(home_path,shared_path,model,label,wildcard)
     files = glob.glob(historical_path)
 
+
     #ORDER = [MODEL,NAME,FILES,TS, TE, MON,RIPF,RR,II,PP,FF,LABEL,ID]
-    ORDER = [MODEL,NAME,FILES,TS, TE, RR,II,PP,FF,LABEL,ID]
+    ORDER = [MODEL,NAME,FRQ,FILES,TS, TE, RR,II,PP,FF,LABEL,ID]
+    if len(files) is 0:
+        return pd.DataFrame([],columns=ORDER)
 
     df = pd.DataFrame(files,columns=[FILES])
-    df[MODEL] = df[FILES].apply(lambda f: Path(f).parents[1].name)
-    df[NAME]  = df[FILES].apply(lambda f: Path(f).name           )
-    #df[MON]   = df[NAME].str.contains('mon')
+
+    df[MODEL]   = df[FILES].apply(lambda f: Path(f).parents[1].name)
+    df[NAME]    = df[FILES].apply(lambda f: Path(f).name           )
+    df[FRQ]     = df[NAME].str.extract('^.*?_[A-Z]*([a-z]*).*_')
     #df[RIPF]  = df[NAME].str.contains('_r.+i.+p.+f.+_')
     #df[VAR]    = df[NAME].str.extract('(\d+)_-\d+.nc')
-    df[TS]    = df[NAME].str.extract('_(\d+)-\d+.nc')
-    df[TE]    = df[NAME].str.extract('_\d+-(\d+).nc')
-    df[RR]   = df[NAME].str.extract('_r(.+?)i.+p.+f.+_').astype(int)
-    df[II ]   = df[NAME].str.extract('_r.+i(.+?)p.+f.+_').astype(int)
-    df[PP ]   = df[NAME].str.extract('_r.+i.+p(.+?)f.+_').astype(int)
-    df[FF ]   = df[NAME].str.extract('_r.+i.+p.+f(.+?)_').astype(int)
-    df[LABEL ]   = df[NAME].str.extract('_(r.+i.+p.+f.+?)_')
-    df[ID]       = df[MODEL]+df[LABEL]
+    df[TS]      = df[NAME].str.extract('_(\d+)-\d+.nc')
+    df[TE]      = df[NAME].str.extract('_\d+-(\d+).nc')
+    df[RR]      = df[NAME].str.extract('_r(.+?)i.+p.+f.+_').astype(int)
+    df[II ]     = df[NAME].str.extract('_r.+i(.+?)p.+f.+_').astype(int)
+    df[PP ]     = df[NAME].str.extract('_r.+i.+p(.+?)f.+_').astype(int)
+    df[FF ]     = df[NAME].str.extract('_r.+i.+p.+f(.+?)_').astype(int)
+    df[LABEL ]  = df[NAME].str.extract('_(r.+i.+p.+f.+?)_')
+    df[ID]      = df[MODEL]+df[LABEL]
+
     df = df[ORDER]
     return df
