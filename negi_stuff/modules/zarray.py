@@ -166,3 +166,35 @@ def search_keyword(ds, *keys, print_attrs=True):
                 if print_attrs:
                     print(ds[var].attrs)
     return found_ls
+
+def change_south_north_west_east_to_lalo(ds_orig):
+    '''
+    gets rid of the annoying west_east south_north notation.
+    In our case its possible but for other wrf runs this might not be the case
+    Parameters
+    ----------
+    ds
+
+    Returns
+    -------
+    ds
+
+    '''
+    # ds = xr.open_dataset(data_path)
+    ds:xr.Dataset = ds_orig
+    ds['XLAT' ] = ds['XLAT' ].mean('west_east'  )
+    ds['XLONG'] = ds['XLONG'].mean('south_north')
+    ds = ds.swap_dims({
+        'west_east'  :'XLONG' ,
+        'south_north':'XLAT'  ,
+    })
+    ds = ds.rename_dims({
+        'bottom_top' :'ilev'    ,
+        'XLAT'       :'lat'     ,
+        'XLONG'      :'lon'
+    })
+    ds = ds.rename_vars({
+        'XLAT'       :'lat'     ,
+        'XLONG'      :'lon'
+    })
+    return ds
