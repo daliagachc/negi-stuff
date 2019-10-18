@@ -1,0 +1,6 @@
+README.md
+setup.py
+negi_stuff.egg-info/PKG-INFO
+negi_stuff.egg-info/SOURCES.txt
+negi_stuff.egg-info/dependency_links.txt
+negi_stuff.egg-info/top_level.txt
