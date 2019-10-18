@@ -6,7 +6,7 @@ Examples:
 better to do
     from negi_stuff.modules.imps import (
         pd, np, xr, za, mpl, plt, sns, pjoin, os,
-        glob, dt, sys, ucp, log, crt
+        glob, dt, sys, ucp, log, crt, cmip6
     )
 
 DEPRECATED (not recommended by convention)
@@ -38,7 +38,7 @@ import negi_stuff.modules.plot.plot as ucp
 
 # so that logging is out of the box
 import negi_stuff.modules.log as log
-
+import negi_stuff.modules.cmip6 as cmip6
 
 # %% reload
 
