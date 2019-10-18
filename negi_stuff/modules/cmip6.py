@@ -8,6 +8,7 @@ from pathlib import Path
 
 FILES = 'FILE'
 MODEL = 'MODEL'
+VAR = 'VARIABLE'
 NAME  = 'NAME'
 MON   = 'MON'
 RIPF  = 'RIPF'
@@ -17,6 +18,8 @@ PP    = 'PHYSICS'
 FF    = 'FORCING'
 LABEL = 'LABEL'
 ID    = 'ID'
+TS    = 'TIME START'
+TE    = 'TIME END'
 from os.path import expanduser
 def search_cmip6_hist(
         wildcard:str = '*',
@@ -54,13 +57,17 @@ def search_cmip6_hist(
     historical_path = os.path.join(home_path,shared_path,model,label,wildcard)
     files = glob.glob(historical_path)
 
-    ORDER = [MODEL,NAME,FILES,MON,RIPF,RR,II,PP,FF,LABEL,ID]
+    #ORDER = [MODEL,NAME,FILES,TS, TE, MON,RIPF,RR,II,PP,FF,LABEL,ID]
+    ORDER = [MODEL,NAME,FILES,TS, TE, RR,II,PP,FF,LABEL,ID]
 
     df = pd.DataFrame(files,columns=[FILES])
     df[MODEL] = df[FILES].apply(lambda f: Path(f).parents[1].name)
     df[NAME]  = df[FILES].apply(lambda f: Path(f).name           )
-    df[MON]   = df[NAME].str.contains('mon')
-    df[RIPF]  = df[NAME].str.contains('_r.+i.+p.+f.+_')
+    #df[MON]   = df[NAME].str.contains('mon')
+    #df[RIPF]  = df[NAME].str.contains('_r.+i.+p.+f.+_')
+    #df[VAR]    = df[NAME].str.extract('(\d+)_-\d+.nc')
+    df[TS]    = df[NAME].str.extract('_(\d+)-\d+.nc')
+    df[TE]    = df[NAME].str.extract('_\d+-(\d+).nc')
     df[RR]   = df[NAME].str.extract('_r(.+?)i.+p.+f.+_').astype(int)
     df[II ]   = df[NAME].str.extract('_r.+i(.+?)p.+f.+_').astype(int)
     df[PP ]   = df[NAME].str.extract('_r.+i.+p(.+?)f.+_').astype(int)
