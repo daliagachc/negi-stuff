@@ -118,30 +118,61 @@ def corr(xa1, xa2, dim=None):
     return cov(xa1, xa2, dim=dim) / (xa1_std * other_std)
 
 
-def masked_average(xa, dim=None, weights=None, mask=None):
+def masked_average(xa:xr.DataArray,
+                   dim=None,
+                   weights:xr.DataArray=None,
+                   mask:xr.DataArray=None):
     """
-
+    This function will average
     :param xa: dataArray
-    :param dim: dims
+    :param dim: dimension or list of dimensions. e.g. 'lat' or ['lat','lon','time']
     :param weights: weights (as xarray)
     :param mask: mask (as xarray), True where values to be masked.
     :return: masked average xarray
     """
-    xa_ = xa.copy()
+    #lest make a copy of the xa
+    xa_copy:xr.DataArray = xa.copy()
+
     if mask is not None:
-        dum, mask_alld = xr.broadcast(xa, mask) # broadcast to all dims
-        xa_ = xa_.where(np.logical_not(mask))
-        if weights is not None:
-            dum, weights_alld = xr.broadcast(xa, weights) # broadcast to all dims
-            weights_alld = weights_alld.where(np.logical_not(mask_alld))
-            return (xa_*weights_alld).sum(dim=dim)/weights_alld.sum(dim=dim)
-        else:
-            return xa_.mean(dim)
+        xa_weighted_average = __weighted_average_with_mask(
+            dim, mask, weights, xa, xa_copy
+        )
     elif weights is not None:
-        dum, weights_alld = xr.broadcast(xa, weights) # broadcast to all dims
-        return (xa_*weights_alld).sum(dim)/weights_alld.where(xa_.notnull()).sum(dim=dim)
+        xa_weighted_average = __weighted_average(
+            dim, weights, xa, xa_copy
+        )
     else:
-        return xa.mean(dim)
+        xa_weighted_average =  xa.mean(dim)
+
+    return xa_weighted_average
+
+
+
+
+def __weighted_average(dim, weights, xa, xa_copy):
+    '''helper function for masked_average'''
+    _, weights_all_dims = xr.broadcast(xa, weights)  # broadcast to all dims
+    x_times_w = xa_copy * weights_all_dims
+    xw_sum = x_times_w.sum(dim)
+    x_tot = weights_all_dims.where(xa_copy.notnull()).sum(dim=dim)
+    xa_weighted_average = xw_sum / x_tot
+    return xa_weighted_average
+
+
+def __weighted_average_with_mask(dim, mask, weights, xa, xa_copy):
+    '''helper function for masked_average'''
+    _, mask_all_dims = xr.broadcast(xa, mask)  # broadcast to all dims
+    xa_copy = xa_copy.where(np.logical_not(mask))
+    if weights is not None:
+        _, weights_all_dims = xr.broadcast(xa, weights)  # broadcast to all dims
+        weights_all_dims = weights_all_dims.where(~mask_all_dims)
+        x_times_w = xa_copy * weights_all_dims
+        xw_sum = x_times_w.sum(dim=dim)
+        x_tot = weights_all_dims.where(xa_copy.notnull()).sum(dim=dim)
+        xa_weighted_average = xw_sum / x_tot
+    else:
+        xa_weighted_average = xa_copy.mean(dim)
+    return xa_weighted_average
 
 
 
