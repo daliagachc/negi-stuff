@@ -44,6 +44,9 @@
     // tabsmenu:open
     // helpmenu:open
     // mainmenu:open-first
+    // hub:restart
+    // hub:control-panel
+    // hub:logout
     // documentsearch:start
     // documentsearch:highlightNext
     // documentsearch:highlightPrevious
@@ -193,6 +196,15 @@
     // completer:invoke-notebook
     // completer:select-notebook
     // tooltip:launch-notebook
+    // @jupyter-widgets/jupyterlab-manager:saveWidgetState
+    // jupytext:ipynb,auto:light
+    // jupytext:ipynb,auto:percent
+    // jupytext:ipynb,auto:hydrogen
+    // jupytext:ipynb,md
+    // jupytext:ipynb,Rmd
+    // jupytext:custom
+    // jupytext:none
+    // jupytext_metadata
     //
     // Note: To disable a system default shortcut,
     // copy it to User Preferences and add the
