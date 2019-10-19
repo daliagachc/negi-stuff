@@ -16,7 +16,7 @@ cd ~
 git clone https://github.com/daliagachc/negi-stuff
 pip install --user -e negi-stuff
 ```
-##update
+## update
 
 The package is updated often so syncing regularly
 is a good idea:
