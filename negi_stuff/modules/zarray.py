@@ -253,7 +253,7 @@ def check_transform_cftime_dim_2_timestamp(
     fixes problems with cftime objects not being converted into timestamp
     objects by xarray.
     it assumes that the frequency of your dataset is lower or equal to months.
-    Otherwise, this conversion might not be appropiate
+    Otherwise, this conversion might not be right
     Parameters
     ----------
     ds
