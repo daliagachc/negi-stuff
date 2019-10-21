@@ -3,7 +3,8 @@
 '''extra functions for xarray'''
 import numpy as np
 import xarray as xr
-
+import cftime
+import pandas as pd
 
 def compressed_netcdf_save(
         ds:xr.Dataset,
@@ -241,4 +242,47 @@ def change_south_north_west_east_to_lalo(ds_orig):
         'XLAT'       :'lat'     ,
         'XLONG'      :'lon'
     })
+    return ds
+
+
+def check_transform_cftime_dim_2_timestamp(
+        ds:xr.Dataset,
+        time_name = 'time'
+) -> xr.Dataset:
+    '''
+    fixes problems with cftime objects not being converted into timestamp
+    objects by xarray.
+    it assumes that the frequency of your dataset is lower or equal to months.
+    Otherwise, this conversion might not be appropiate
+    Parameters
+    ----------
+    ds
+        input xr.Dataarray or xr.Dataset
+    time_name
+        name of the time dimension
+
+    Returns
+    -------
+    ds with the modified time so that its a pd.Timestamp object
+
+    '''
+
+    xa_time_dim = ds[time_name]
+
+    time_first_element = xa_time_dim.values[0]
+
+    time_type = type(time_first_element)
+
+
+
+    is_type_cftime = (
+            (time_type == cftime._cftime.DatetimeNoLeap) | \
+            (time_type == cftime._cftime.Datetime360Day)
+    )
+
+    if is_type_cftime:
+        # transform to pd.timestamp object
+        time_dim_string = xa_time_dim.dt.strftime(time_first_element.format)
+        ds[time_name] = pd.to_datetime(time_dim_string)
+
     return ds
