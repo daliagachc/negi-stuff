@@ -45,7 +45,13 @@ def check_transform_cftime_dim_2_timestamp(
 
     if is_type_cftime:
         # transform to pd.timestamp object
-        time_dim_string = df.index.dt.strftime(time_first_element.format)
+        orig_name = df.index.name
+        if orig_name == None:
+            orig_name = 'time'
+            df.index.name = orig_name
+
+        time_xr_index = df.to_xarray()[orig_name]
+        time_dim_string = time_xr_index.dt.strftime(time_first_element.format)
         df.index = pd.to_datetime(time_dim_string)
 
     return df
