@@ -28,8 +28,8 @@ def check_transform_cftime_dim_2_timestamp(
         input
     middle_of_month
         if cftime.Datetime360Day then values like (2019,2,30) are allowed
-        but that makes no sense in pd.Timestamp so, we subtract 15 days to
-        be in the middle and avoid this
+        but that makes no sense in pd.Timestamp so we set it to 15 days to
+        be in the middle and avoid the error
 
     Returns
     -------
@@ -55,8 +55,8 @@ def check_transform_cftime_dim_2_timestamp(
             orig_name = 'time'
             df.index.name = orig_name
 
-        time_xr_index = df.to_xarray()[orig_name]
-        time_dim_string = time_xr_index.dt.strftime(time_first_element.format)
+    time_xr_index = df.to_xarray()[orig_name]
+    # time_dim_string = time_xr_index.dt.strftime(time_first_element.format)
     #     df.index = pd.to_datetime(time_dim_string)
     y = 'Year'
     m = 'Month'
