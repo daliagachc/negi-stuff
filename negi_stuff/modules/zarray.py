@@ -5,6 +5,7 @@ import numpy as np
 import xarray as xr
 import cftime
 import pandas as pd
+from os.path import expanduser
 
 def compressed_netcdf_save(
         ds:xr.Dataset,
@@ -286,3 +287,62 @@ def check_transform_cftime_dim_2_timestamp(
         ds[time_name] = pd.to_datetime(time_dim_string)
 
     return ds
+
+
+
+# ctrl_tas = xr.open_mfdataset(path_ctrl_tas,combine='nested', concat_dim='time')
+
+# tas_test = zarray.check_transform_cftime_dim_2_timestamp(ctrl_tas)
+
+def slice_and_convert_long_model_ds(model_ds,
+                                    y_ini = 1850,
+                                    y_end = 2014,
+                                    start_y = 1850):
+    '''
+
+    Parameters
+    ----------
+    model_ds
+        model ds with years spaning thousands of years
+    y_ini
+        init year to slice
+    y_end
+        end year to slice
+    start_y
+        starting year
+
+    Returns
+    -------
+    sliced model ds with corrected time
+
+    Examples
+    ------
+    >>> path_ctrl_tas = 'path_to_model_ds'
+    >>> ds = xr.open_mfdataset(path_ctrl_tas,combine='nested', concat_dim='time')
+    >>> ds_sliced = slice_and_convert_long_model_ds(ds)
+
+    '''
+    first_time_value = model_ds.time.dt.year.values[0]
+    offset_year = first_time_value - start_y
+
+
+
+    time_dim = model_ds.time.copy()
+    time_dim['Year']  = time_dim.dt.year   - offset_year
+    time_dim['Month'] = time_dim.dt.month
+    time_dim['Day']   = time_dim.dt.day
+
+    _mask  = (time_dim['Year']>=y_ini) & (time_dim['Year']<=y_end)
+
+    time_dim = time_dim[_mask]
+
+
+    cols =['Day','Month','Year']
+    _time_df = time_dim.to_dataframe()[cols]
+
+
+    sliced_fixed_ds = model_ds.where(_mask).dropna(dim='time')
+
+    sliced_fixed_ds['time'] = time_dim
+
+    return sliced_fixed_ds
