@@ -29,6 +29,7 @@ def get_actual_path(path):
     pa = Path(p1)
 
     user = pa.parts[0]
+    user = user.replace('-','-2d')
 
     rest = pa.parts[3:]
 
