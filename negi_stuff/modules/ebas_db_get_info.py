@@ -1,7 +1,7 @@
 import pyaerocom as pya
 pya.__version__
 pya.const.BASEDIR = '/home/notebook/shared-ns1000k/inputs/pyaerocom-testdata/'
-def get_station_coords(station_name):
+def get_station_coords(station_name, unique=True):
     """
     If match unique, returns tuplet with (<station name>, <lon>, <lat>)
     else prints message and returns Null. 
@@ -13,8 +13,11 @@ def get_station_coords(station_name):
     #station_name='Zeppelin'
     match_c = 0
     st_match=[]
+    
     for comb in st_coor:
-        if station_name in comb[0]:
+        if unique: test = station_name.strip()==comb[0].strip()
+        else: test= station_name in comb[0]
+        if test:
             match_c +=1
             print('found station name: %s' %comb[0])
             st_match.append(comb)
