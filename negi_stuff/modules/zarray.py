@@ -343,6 +343,6 @@ def slice_and_convert_long_model_ds(model_ds,
 
     sliced_fixed_ds = model_ds.where(_mask).dropna(dim='time')
 
-    sliced_fixed_ds['time'] = time_dim
+    sliced_fixed_ds['time'] = _time_df
 
     return sliced_fixed_ds
