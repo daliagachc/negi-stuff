@@ -340,9 +340,14 @@ def slice_and_convert_long_model_ds(model_ds,
     cols =['Day','Month','Year']
     _time_df = time_dim.to_dataframe()[cols]
 
+    _time_df_index = _time_df.reset_index()
+
+    _time_df_index['time'] = pd.to_datetime(_time_df_index[cols])
+
+    _time_df_index=_time_df_index.set_index('time',drop=False)['time']
 
     sliced_fixed_ds = model_ds.where(_mask).dropna(dim='time')
 
-    sliced_fixed_ds['time'] = _time_df
+    sliced_fixed_ds['time'] = _time_df_index
 
     return sliced_fixed_ds
