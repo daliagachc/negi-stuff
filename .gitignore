@@ -6,3 +6,4 @@ __pycache__
 *.swp
 
 wrf_out.small.h5
+/negi_stuff.egg-info
