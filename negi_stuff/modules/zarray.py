@@ -303,7 +303,7 @@ def slice_and_convert_long_model_ds(model_ds,
     Parameters
     ----------
     model_ds
-        model ds with years spaning thousands of years
+        model ds with years spanning thousands of years
     y_ini
         init year to slice
     y_end
